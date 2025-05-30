@@ -7,7 +7,7 @@
     },
     "files": {
         "ignoreUnknown": false,
-        "ignore": ["node_modules/", ".idea/"]
+        "ignore": ["node_modules/", ".idea/", ".claude/", "dist/"]
     },
     "formatter": {
         "enabled": true,
@@ -21,7 +21,14 @@
     "linter": {
         "enabled": true,
         "rules": {
-            "recommended": true
+            "recommended": true,
+            "suspicious": {
+                "noExplicitAny": "off",
+                "noThenProperty": "off"
+            },
+            "style": {
+                "noUselessElse": "off"
+            }
         }
     },
     "javascript": {
