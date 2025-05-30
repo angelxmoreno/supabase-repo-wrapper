@@ -32,6 +32,7 @@ export class UserRepository extends BaseRepository<UserEntity> {
 }
 
 // Example usage
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const example = async () => {
     const supabase = createClient('your-url', 'your-anon-key');
     const userRepo = new UserRepository(supabase);

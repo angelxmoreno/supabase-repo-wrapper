@@ -105,7 +105,10 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return data as T[];
     }
 
-    private applyOrderBy(query: any, orderBy?: OrderBy | OrderBy[]): any {
+    private applyOrderBy<Q extends { order(column: string, options: { ascending?: boolean }): Q }>(
+        query: Q,
+        orderBy?: OrderBy | OrderBy[]
+    ): Q {
         if (!orderBy) {
             return query;
         }
