@@ -5,6 +5,8 @@ A generic `BaseRepository<T>` class for Supabase that provides common data acces
 [![npm version](https://badge.fury.io/js/supabase-repo-wrapper.svg)](https://badge.fury.io/js/supabase-repo-wrapper)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/558f0fa5347548be829ce238ba99b984)](https://app.codacy.com/gh/angelxmoreno/supabase-repo-wrapper/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![codecov](https://codecov.io/gh/angelxmoreno/supabase-repo-wrapper/graph/badge.svg?token=JUQ5VZ1C57)](https://codecov.io/gh/angelxmoreno/supabase-repo-wrapper)
 
 ## Features
 
