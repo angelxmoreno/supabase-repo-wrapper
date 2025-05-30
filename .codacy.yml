@@ -11,3 +11,4 @@ ignore_paths:
   - dist/
   - node_modules/
   - coverage/
+  - examples/

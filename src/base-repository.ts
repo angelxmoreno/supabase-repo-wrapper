@@ -105,6 +105,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return data as T[];
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     private applyOrderBy<Q extends { order(column: string, options: { ascending?: boolean }): Q }>(
         query: Q,
         orderBy?: OrderBy | OrderBy[]
