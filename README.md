@@ -131,20 +131,25 @@ console.log(page.pagination); // { page: 1, pageSize: 10, totalCount: 25, totalP
 ### Core CRUD Methods
 
 #### `get(id: string | number): Promise<T | null>`
+
 Retrieve a single record by its ID.
 
 #### `create(data: Omit<T, 'id'>): Promise<T>`
+
 Create a new record and return the created record.
 
 #### `update(id: string | number, data: Partial<Omit<T, 'id'>>): Promise<T>`
+
 Update an existing record and return the updated record.
 
 #### `delete(id: string | number): Promise<void>`
+
 Delete a record by its ID.
 
 ### Query Methods
 
 #### `find(options?: FindOptions<T>): Promise<T[]>`
+
 Find multiple records with optional filtering and ordering.
 
 ```typescript
@@ -162,6 +167,7 @@ interface OrderBy {
 ```
 
 #### `findPaginated(options: FindPaginatedOptions<T>): Promise<PaginatedResult<T>>`
+
 Find records with pagination support.
 
 ```typescript
@@ -186,25 +192,31 @@ interface Pagination {
 ### Utility Methods
 
 #### `exists(filter: FilterFunction<T>): Promise<boolean>`
+
 Check if any records match the given filter.
 
 #### `count(filter?: FilterFunction<T>): Promise<number>`
+
 Count records, optionally with a filter.
 
 ### Bulk Operations
 
 #### `createMany(records: Omit<T, 'id'>[]): Promise<T[]>`
+
 Create multiple records in a single operation.
 
 #### `updateMany(records: Array<{ id: string | number } & Partial<T>>): Promise<T[]>`
+
 Update multiple records in a single operation.
 
 #### `deleteMany(ids: Array<string | number>): Promise<void>`
+
 Delete multiple records by their IDs.
 
 ### Advanced Operations
 
 #### `upsert(data: Partial<T>, conflictColumns: string[]): Promise<T>`
+
 Insert a new record or update an existing one based on conflict columns.
 
 ```typescript

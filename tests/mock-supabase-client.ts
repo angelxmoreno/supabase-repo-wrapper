@@ -9,16 +9,16 @@ export class MockSupabaseClient {
     private mockData: Map<string, any[]> = new Map();
 
     // Set up mock data for a table
-    setTableData(tableName: string, data: any[]) {
+    public setTableData(tableName: string, data: any[]) {
         this.mockData.set(tableName, data);
     }
 
     // Set up mock response for specific operations
-    setMockResponse(key: string, response: MockSupabaseResponse) {
+    public setMockResponse(key: string, response: MockSupabaseResponse) {
         this.mockResponses.set(key, response);
     }
 
-    from(tableName: string) {
+    public from(tableName: string) {
         return new MockPostgrestQueryBuilder(tableName, this.mockData, this.mockResponses);
     }
 }
@@ -41,7 +41,7 @@ class MockPostgrestQueryBuilder {
         this.mockResponses = mockResponses;
     }
 
-    select(fields = '*', options?: { count?: string; head?: boolean }) {
+    public select(fields = '*', options?: { count?: string; head?: boolean }) {
         this.selectFields = fields;
         if (options?.count === 'exact') {
             this.isCountQuery = true;
@@ -52,66 +52,66 @@ class MockPostgrestQueryBuilder {
         return this;
     }
 
-    eq(column: string, value: any) {
+    public eq(column: string, value: any) {
         this.filters.push((item) => item[column] === value);
         return this;
     }
 
-    neq(column: string, value: any) {
+    public neq(column: string, value: any) {
         this.filters.push((item) => item[column] !== value);
         return this;
     }
 
-    gt(column: string, value: any) {
+    public gt(column: string, value: any) {
         this.filters.push((item) => item[column] > value);
         return this;
     }
 
-    gte(column: string, value: any) {
+    public gte(column: string, value: any) {
         this.filters.push((item) => item[column] >= value);
         return this;
     }
 
-    lt(column: string, value: any) {
+    public lt(column: string, value: any) {
         this.filters.push((item) => item[column] < value);
         return this;
     }
 
-    lte(column: string, value: any) {
+    public lte(column: string, value: any) {
         this.filters.push((item) => item[column] <= value);
         return this;
     }
 
-    ilike(column: string, pattern: string) {
+    public ilike(column: string, pattern: string) {
         const regex = new RegExp(pattern.replace(/%/g, '.*'), 'i');
         this.filters.push((item) => regex.test(item[column]));
         return this;
     }
 
-    not(column: string, operator: string, value: any) {
+    public not(column: string, operator: string, value: any) {
         if (operator === 'is' && value === null) {
             this.filters.push((item) => item[column] !== null);
         }
         return this;
     }
 
-    in(column: string, values: any[]) {
+    public in(column: string, values: any[]) {
         this.filters.push((item) => values.includes(item[column]));
         return this;
     }
 
-    order(column: string, options?: { ascending?: boolean }) {
+    public order(column: string, options?: { ascending?: boolean }) {
         this.orderBy.push({ column, ascending: options?.ascending ?? true });
         return this;
     }
 
-    range(start: number, end: number) {
+    public range(start: number, end: number) {
         this.rangeStart = start;
         this.rangeEnd = end;
         return this;
     }
 
-    single() {
+    public single() {
         const result = this.executeQuery();
         if (result.error) return result;
 
@@ -125,7 +125,7 @@ class MockPostgrestQueryBuilder {
         return { data: data[0], error: null };
     }
 
-    insert(data: any | any[]) {
+    public insert(data: any | any[]) {
         const insertData = Array.isArray(data) ? data : [data];
         const tableData = this.mockData.get(this.tableName) || [];
 
@@ -157,7 +157,7 @@ class MockPostgrestQueryBuilder {
         };
     }
 
-    update(data: any) {
+    public update(data: any) {
         return {
             eq: (column: string, value: any) => ({
                 select: () => ({
@@ -180,7 +180,7 @@ class MockPostgrestQueryBuilder {
         };
     }
 
-    upsert(data: any, options?: { onConflict?: string }) {
+    public upsert(data: any, options?: { onConflict?: string }) {
         const upsertData = Array.isArray(data) ? data : [data];
         const tableData = this.mockData.get(this.tableName) || [];
         const conflictColumns = options?.onConflict?.split(',') || ['id'];
@@ -216,7 +216,7 @@ class MockPostgrestQueryBuilder {
         };
     }
 
-    delete() {
+    public delete() {
         return {
             eq: (column: string, value: any) => {
                 const tableData = this.mockData.get(this.tableName) || [];
@@ -273,7 +273,7 @@ class MockPostgrestQueryBuilder {
         };
     }
 
-    async then(callback: (result: MockSupabaseResponse) => any) {
+    public async then(callback: (result: MockSupabaseResponse) => any) {
         return callback(this.executeQuery());
     }
 }

@@ -15,6 +15,7 @@ Thank you for your interest in contributing to `supabase-repo-wrapper`! This doc
 ## Code of Conduct
 
 This project follows a simple code of conduct:
+
 - Be respectful and inclusive
 - Focus on constructive feedback
 - Help make the project better for everyone
@@ -31,22 +32,26 @@ This project follows a simple code of conduct:
 
 1. Fork the repository on GitHub
 2. Clone your fork locally:
+
    ```bash
    git clone https://github.com/your-username/supabase-repo-wrapper.git
    cd supabase-repo-wrapper
    ```
 
 3. Install dependencies:
+
    ```bash
    bun install
    ```
 
 4. Run tests to ensure everything is working:
+
    ```bash
    bun test
    ```
 
 5. Run linting:
+
    ```bash
    bun run lint
    ```
@@ -56,6 +61,7 @@ This project follows a simple code of conduct:
 ### Branch Naming
 
 Use descriptive branch names:
+
 - `feature/add-soft-delete` - for new features
 - `fix/pagination-bug` - for bug fixes
 - `docs/api-examples` - for documentation updates
@@ -64,7 +70,8 @@ Use descriptive branch names:
 ### Commit Messages
 
 Follow conventional commit format:
-```
+
+```txt
 type(scope): description
 
 [optional body]
@@ -73,6 +80,7 @@ type(scope): description
 ```
 
 Types:
+
 - `feat` - new feature
 - `fix` - bug fix
 - `docs` - documentation changes
@@ -82,7 +90,8 @@ Types:
 - `chore` - maintain build scripts, dependencies, etc.
 
 Examples:
-```
+
+```txt
 feat(repository): add soft delete support
 
 Add support for soft delete operations with deleted_at convention.
@@ -102,6 +111,7 @@ with different conflict column scenarios.
 ### Code Style
 
 The project uses Biome for linting and formatting:
+
 - Run `bun run lint` to check for issues
 - Run `bun run lint:fix` to auto-fix issues
 - Follow existing code patterns and conventions
@@ -130,6 +140,7 @@ bun test tests/base-repository.test.ts
 - Test both success and error scenarios
 
 Example test structure:
+
 ```typescript
 import { describe, test, expect, beforeEach } from 'bun:test';
 
@@ -167,16 +178,19 @@ describe('FeatureName', () => {
 ### Before Submitting
 
 1. Ensure all tests pass:
+
    ```bash
    bun test
    ```
 
 2. Ensure linting passes:
+
    ```bash
    bun run lint
    ```
 
 3. Ensure the build works:
+
    ```bash
    bun run build
    ```
@@ -243,6 +257,7 @@ When adding new methods to `BaseRepository`:
 5. Update API documentation
 
 Example:
+
 ```typescript
 /**
  * Finds the first record matching the filter criteria.
@@ -291,7 +306,7 @@ Releases are handled by maintainers:
 
 ## Project Structure
 
-```
+```txt
 supabase-repo-wrapper/
 ├── src/                    # Source code
 │   ├── base-repository.ts  # Main repository class

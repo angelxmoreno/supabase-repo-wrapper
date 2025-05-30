@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial release of supabase-repo-wrapper
 - BaseRepository class with comprehensive CRUD operations
 - TypeScript support with full type safety
@@ -15,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Complete documentation with examples
 
 ### Features
+
 - **Core CRUD Operations**: get, create, update, delete
 - **Query Methods**: find with filtering and ordering, findPaginated
 - **Utility Methods**: exists, count
@@ -28,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2024-01-XX
 
 ### Added
+
 - Initial stable release
 - BaseRepository abstract class
 - Complete TypeScript type definitions
@@ -37,10 +40,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build and publish configuration
 
 ### Dependencies
+
 - @supabase/supabase-js ^2.49.8
 - drizzle-orm ^0.44.0
 
 ### Documentation
+
 - README.md with quick start guide
 - API documentation (docs/api.md)
 - Usage examples (docs/examples.md)
@@ -48,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Contributing guidelines (CONTRIBUTING.md)
 
 ### Testing
+
 - 32 comprehensive tests
 - MockSupabaseClient for isolated testing
 - Coverage for all BaseRepository methods
@@ -56,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Error scenario testing
 
 ### Development
+
 - Bun-based build system
 - Biome for linting and formatting
 - TypeScript strict mode
@@ -69,21 +76,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### [X.Y.Z] - YYYY-MM-DD
 
 #### Added
+
 - New features
 
 #### Changed
+
 - Changes in existing functionality
 
 #### Deprecated
+
 - Soon-to-be removed features
 
 #### Removed
+
 - Now removed features
 
 #### Fixed
+
 - Bug fixes
 
 #### Security
+
 - Vulnerability fixes
 
 ---

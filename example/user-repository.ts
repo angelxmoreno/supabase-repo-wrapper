@@ -2,13 +2,13 @@ import { createClient } from '@supabase/supabase-js';
 import { BaseRepository } from '../src/index.js';
 
 // Example user entity type (would typically come from Drizzle schema)
-export type UserEntity = {
+export interface UserEntity {
     id: string;
     email: string;
     name: string;
     created_at: string;
     updated_at: string;
-};
+}
 
 export class UserRepository extends BaseRepository<UserEntity> {
     constructor(client: ReturnType<typeof createClient>) {
@@ -16,14 +16,14 @@ export class UserRepository extends BaseRepository<UserEntity> {
     }
 
     // Add custom methods specific to users
-    async findByEmail(email: string): Promise<UserEntity | null> {
+    public async findByEmail(email: string): Promise<UserEntity | null> {
         const users = await this.find({
             filter: (query) => query.eq('email', email),
         });
         return users[0] || null;
     }
 
-    async findActiveUsers(): Promise<UserEntity[]> {
+    public async findActiveUsers(): Promise<UserEntity[]> {
         return this.find({
             filter: (query) => query.not('deleted_at', 'is', null),
             orderBy: { column: 'created_at', ascending: false },
@@ -32,7 +32,7 @@ export class UserRepository extends BaseRepository<UserEntity> {
 }
 
 // Example usage
-async function example() {
+const example = async () => {
     const supabase = createClient('your-url', 'your-anon-key');
     const userRepo = new UserRepository(supabase);
 
@@ -97,4 +97,4 @@ async function example() {
         userByEmail,
         activeUsers,
     };
-}
+};

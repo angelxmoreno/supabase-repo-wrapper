@@ -13,7 +13,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         this.client = client;
     }
 
-    async get(id: string | number): Promise<T | null> {
+    public async get(id: string | number): Promise<T | null> {
         const { data, error } = await this.client.from(this.tableName).select().eq('id', id).single();
 
         if (error) {
@@ -23,7 +23,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return data as T;
     }
 
-    async find(options: FindOptions<T> = {}): Promise<T[]> {
+    public async find(options: FindOptions<T> = {}): Promise<T[]> {
         let query = this.client.from(this.tableName).select();
 
         if (options.filter) {
@@ -46,11 +46,26 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return data as T[];
     }
 
-    async findPaginated(options: FindPaginatedOptions<T>): Promise<PaginatedResult<T>> {
+    public async findPaginated(options: FindPaginatedOptions<T>): Promise<PaginatedResult<T>> {
         const { page, pageSize, filter, orderBy } = options;
         const offset = (page - 1) * pageSize;
 
-        // Get total count
+        const totalCount = await this.getTotalCount(filter);
+        const totalPages = Math.ceil(totalCount / pageSize);
+        const items = await this.getPaginatedData(offset, pageSize, filter, orderBy);
+
+        return {
+            items,
+            pagination: {
+                page,
+                pageSize,
+                totalCount,
+                totalPages,
+            },
+        };
+    }
+
+    private async getTotalCount(filter?: FilterFunction<T>): Promise<number> {
         let countQuery = this.client.from(this.tableName).select('*', { count: 'exact', head: true });
         if (filter) {
             countQuery = filter(countQuery);
@@ -61,10 +76,15 @@ export abstract class BaseRepository<T extends Record<string, any>> {
             throw countError;
         }
 
-        const totalCount = count ?? 0;
-        const totalPages = Math.ceil(totalCount / pageSize);
+        return count ?? 0;
+    }
 
-        // Get paginated data
+    private async getPaginatedData(
+        offset: number,
+        pageSize: number,
+        filter?: FilterFunction<T>,
+        orderBy?: OrderBy | OrderBy[]
+    ): Promise<T[]> {
         let dataQuery = this.client
             .from(this.tableName)
             .select()
@@ -74,12 +94,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
             dataQuery = filter(dataQuery);
         }
 
-        if (orderBy) {
-            const orderByArray = Array.isArray(orderBy) ? orderBy : [orderBy];
-            for (const order of orderByArray) {
-                dataQuery = dataQuery.order(order.column, { ascending: order.ascending ?? true });
-            }
-        }
+        dataQuery = this.applyOrderBy(dataQuery, orderBy);
 
         const { data, error } = await dataQuery;
 
@@ -87,18 +102,23 @@ export abstract class BaseRepository<T extends Record<string, any>> {
             throw error;
         }
 
-        return {
-            items: data as T[],
-            pagination: {
-                page,
-                pageSize,
-                totalCount,
-                totalPages,
-            },
-        };
+        return data as T[];
     }
 
-    async create(data: Omit<T, 'id'>): Promise<T> {
+    private applyOrderBy(query: any, orderBy?: OrderBy | OrderBy[]): any {
+        if (!orderBy) {
+            return query;
+        }
+
+        let result = query;
+        const orderByArray = Array.isArray(orderBy) ? orderBy : [orderBy];
+        for (const order of orderByArray) {
+            result = result.order(order.column, { ascending: order.ascending ?? true });
+        }
+        return result;
+    }
+
+    public async create(data: Omit<T, 'id'>): Promise<T> {
         const { data: result, error } = await this.client.from(this.tableName).insert(data).select().single();
 
         if (error) {
@@ -108,7 +128,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return result as T;
     }
 
-    async update(id: string | number, data: Partial<Omit<T, 'id'>>): Promise<T> {
+    public async update(id: string | number, data: Partial<Omit<T, 'id'>>): Promise<T> {
         const { data: result, error } = await this.client
             .from(this.tableName)
             .update(data)
@@ -123,7 +143,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return result as T;
     }
 
-    async delete(id: string | number): Promise<void> {
+    public async delete(id: string | number): Promise<void> {
         const { error } = await this.client.from(this.tableName).delete().eq('id', id);
 
         if (error) {
@@ -131,7 +151,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         }
     }
 
-    async upsert(data: Partial<T>, conflictColumns: string[]): Promise<T> {
+    public async upsert(data: Partial<T>, conflictColumns: string[]): Promise<T> {
         const { data: result, error } = await this.client
             .from(this.tableName)
             .upsert(data, { onConflict: conflictColumns.join(',') })
@@ -145,7 +165,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return result as T;
     }
 
-    async exists(filter: FilterFunction<T>): Promise<boolean> {
+    public async exists(filter: FilterFunction<T>): Promise<boolean> {
         let query = this.client.from(this.tableName).select('id', { count: 'exact', head: true });
         query = filter(query);
 
@@ -158,7 +178,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return (count ?? 0) > 0;
     }
 
-    async count(filter?: FilterFunction<T>): Promise<number> {
+    public async count(filter?: FilterFunction<T>): Promise<number> {
         let query = this.client.from(this.tableName).select('*', { count: 'exact', head: true });
 
         if (filter) {
@@ -174,7 +194,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return count ?? 0;
     }
 
-    async createMany(records: Omit<T, 'id'>[]): Promise<T[]> {
+    public async createMany(records: Omit<T, 'id'>[]): Promise<T[]> {
         const { data, error } = await this.client.from(this.tableName).insert(records).select();
 
         if (error) {
@@ -184,7 +204,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return data as T[];
     }
 
-    async updateMany(records: Array<{ id: string | number } & Partial<T>>): Promise<T[]> {
+    public async updateMany(records: ({ id: string | number } & Partial<T>)[]): Promise<T[]> {
         const results: T[] = [];
 
         for (const record of records) {
@@ -197,7 +217,7 @@ export abstract class BaseRepository<T extends Record<string, any>> {
         return results;
     }
 
-    async deleteMany(ids: Array<string | number>): Promise<void> {
+    public async deleteMany(ids: (string | number)[]): Promise<void> {
         const { error } = await this.client.from(this.tableName).delete().in('id', ids);
 
         if (error) {

@@ -21,14 +21,17 @@
         "coverage": "bun test --coverage --coverage-reporter=lcov --coverage-reporter=text",
         "prepare": "if [ \"$CI\" = \"true\" ]; then echo 'CI detected: skipping lefthook install'; else bunx lefthook install; fi",
         "lint": "bun biome check .",
-        "lint:fix": "bun biome check --write"
+        "lint:fix": "bun biome check --write",
+        "format": "markdownlint-cli2 \"**/*.md\" \"#node_modules\"",
+        "format:fix": "bun run format --fix"
     },
     "devDependencies": {
         "@biomejs/biome": "^1.9.4",
         "@commitlint/cli": "^19.8.1",
         "@commitlint/config-conventional": "^19.8.1",
         "@types/bun": "latest",
-        "lefthook": "^1.11.13"
+        "lefthook": "^1.11.13",
+        "markdownlint-cli2": "^0.18.1"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"

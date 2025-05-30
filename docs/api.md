@@ -7,7 +7,7 @@ Complete API reference for the `BaseRepository<T>` class and related types.
 - [BaseRepository Class](#baserepository-class)
 - [Type Definitions](#type-definitions)
 - [Method Reference](#method-reference)
-- [Examples](#examples)
+- [Filter Examples](#filter-examples)
 
 ## BaseRepository Class
 
@@ -20,10 +20,12 @@ constructor(tableName: string, client: SupabaseClient)
 Creates a new repository instance for the specified table.
 
 **Parameters:**
+
 - `tableName: string` - The name of the database table
 - `client: SupabaseClient` - Supabase client instance
 
 **Example:**
+
 ```typescript
 const userRepo = new UserRepository('users', supabaseClient);
 ```
@@ -108,12 +110,15 @@ async get(id: string | number): Promise<T | null>
 Retrieves a single record by its ID.
 
 **Parameters:**
+
 - `id: string | number` - The primary key value
 
 **Returns:**
+
 - `Promise<T | null>` - The record if found, null otherwise
 
 **Example:**
+
 ```typescript
 const user = await userRepo.get('123');
 if (user) {
@@ -122,6 +127,7 @@ if (user) {
 ```
 
 **Throws:**
+
 - Supabase errors for database issues
 
 #### create
@@ -133,12 +139,15 @@ async create(data: Omit<T, 'id'>): Promise<T>
 Creates a new record in the database.
 
 **Parameters:**
+
 - `data: Omit<T, 'id'>` - The record data without the ID field
 
 **Returns:**
+
 - `Promise<T>` - The created record with generated ID
 
 **Example:**
+
 ```typescript
 const newUser = await userRepo.create({
   name: 'John Doe',
@@ -149,6 +158,7 @@ console.log(newUser.id); // Generated ID
 ```
 
 **Throws:**
+
 - Supabase errors for validation, constraint violations, etc.
 
 #### update
@@ -160,13 +170,16 @@ async update(id: string | number, data: Partial<Omit<T, 'id'>>): Promise<T>
 Updates an existing record.
 
 **Parameters:**
+
 - `id: string | number` - The primary key value
 - `data: Partial<Omit<T, 'id'>>` - Partial update data
 
 **Returns:**
+
 - `Promise<T>` - The updated record
 
 **Example:**
+
 ```typescript
 const updatedUser = await userRepo.update('123', {
   name: 'Jane Doe',
@@ -175,6 +188,7 @@ const updatedUser = await userRepo.update('123', {
 ```
 
 **Throws:**
+
 - Supabase errors if record not found or update fails
 
 #### delete
@@ -186,17 +200,21 @@ async delete(id: string | number): Promise<void>
 Deletes a record by its ID.
 
 **Parameters:**
+
 - `id: string | number` - The primary key value
 
 **Returns:**
+
 - `Promise<void>`
 
 **Example:**
+
 ```typescript
 await userRepo.delete('123');
 ```
 
 **Throws:**
+
 - Supabase errors for database issues
 
 ### Query Operations
@@ -210,12 +228,15 @@ async find(options?: FindOptions<T>): Promise<T[]>
 Finds multiple records with optional filtering and ordering.
 
 **Parameters:**
+
 - `options?: FindOptions<T>` - Query options
 
 **Returns:**
+
 - `Promise<T[]>` - Array of matching records
 
 **Examples:**
+
 ```typescript
 // Find all records
 const allUsers = await userRepo.find();
@@ -254,12 +275,15 @@ async findPaginated(options: FindPaginatedOptions<T>): Promise<PaginatedResult<T
 Finds records with pagination support.
 
 **Parameters:**
+
 - `options: FindPaginatedOptions<T>` - Pagination and query options
 
 **Returns:**
+
 - `Promise<PaginatedResult<T>>` - Paginated results with metadata
 
 **Example:**
+
 ```typescript
 const page = await userRepo.findPaginated({
   page: 1,
@@ -284,12 +308,15 @@ async exists(filter: FilterFunction<T>): Promise<boolean>
 Checks if any records match the given filter.
 
 **Parameters:**
+
 - `filter: FilterFunction<T>` - Filter function to apply
 
 **Returns:**
+
 - `Promise<boolean>` - True if matching records exist
 
 **Example:**
+
 ```typescript
 const emailExists = await userRepo.exists(
   (query) => query.eq('email', 'john@example.com')
@@ -309,12 +336,15 @@ async count(filter?: FilterFunction<T>): Promise<number>
 Counts records, optionally with a filter.
 
 **Parameters:**
+
 - `filter?: FilterFunction<T>` - Optional filter function
 
 **Returns:**
+
 - `Promise<number>` - Count of matching records
 
 **Examples:**
+
 ```typescript
 // Count all records
 const totalUsers = await userRepo.count();
@@ -336,12 +366,15 @@ async createMany(records: Omit<T, 'id'>[]): Promise<T[]>
 Creates multiple records in a single database operation.
 
 **Parameters:**
+
 - `records: Omit<T, 'id'>[]` - Array of records to create
 
 **Returns:**
+
 - `Promise<T[]>` - Array of created records with generated IDs
 
 **Example:**
+
 ```typescript
 const newUsers = await userRepo.createMany([
   { name: 'John', email: 'john@example.com', age: 30 },
@@ -360,12 +393,15 @@ async updateMany(records: Array<{ id: string | number } & Partial<T>>): Promise<
 Updates multiple records. Each record must include its ID.
 
 **Parameters:**
+
 - `records: Array<{ id: string | number } & Partial<T>>` - Array of updates
 
 **Returns:**
+
 - `Promise<T[]>` - Array of updated records
 
 **Example:**
+
 ```typescript
 const updatedUsers = await userRepo.updateMany([
   { id: '1', name: 'John Updated' },
@@ -384,12 +420,15 @@ async deleteMany(ids: Array<string | number>): Promise<void>
 Deletes multiple records by their IDs.
 
 **Parameters:**
+
 - `ids: Array<string | number>` - Array of primary key values
 
 **Returns:**
+
 - `Promise<void>`
 
 **Example:**
+
 ```typescript
 await userRepo.deleteMany(['1', '2', '3']);
 ```
@@ -405,13 +444,16 @@ async upsert(data: Partial<T>, conflictColumns: string[]): Promise<T>
 Inserts a new record or updates an existing one based on conflict columns.
 
 **Parameters:**
+
 - `data: Partial<T>` - The record data
 - `conflictColumns: string[]` - Columns to check for conflicts
 
 **Returns:**
+
 - `Promise<T>` - The upserted record
 
 **Examples:**
+
 ```typescript
 // Upsert by email
 const user = await userRepo.upsert(
@@ -528,6 +570,7 @@ try {
 ## Performance Considerations
 
 ### Indexing
+
 Ensure your database has appropriate indexes for columns used in filters:
 
 ```sql
@@ -541,6 +584,7 @@ CREATE INDEX idx_users_status_age ON users(status, age);
 ```
 
 ### Pagination
+
 Use `findPaginated` instead of `find` with `limit` for better performance with large datasets:
 
 ```typescript
@@ -558,6 +602,7 @@ const users = await userRepo.find({
 ```
 
 ### Bulk Operations
+
 Use bulk methods when working with multiple records:
 
 ```typescript

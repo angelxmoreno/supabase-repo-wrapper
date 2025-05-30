@@ -22,9 +22,11 @@ export abstract class BaseRepository<T extends Record<string, any>>
 The main repository class that provides CRUD operations for entities of type `T`.
 
 **Type Parameters:**
+
 - `T extends Record<string, any>` - The entity type that this repository manages
 
 **Example:**
+
 ```typescript
 interface User {
   id: string;
@@ -49,12 +51,15 @@ export type FilterFunction<T> = (query: any) => any;
 A function type that receives a Supabase query builder and returns a modified query builder with filters applied.
 
 **Parameters:**
+
 - `query: SupabaseQueryBuilder` - The Supabase query builder instance
 
 **Returns:**
+
 - `SupabaseQueryBuilder` - The modified query builder with filters applied
 
 **Example:**
+
 ```typescript
 const ageFilter: FilterFunction<User> = (query) => query.gte('age', 18);
 
@@ -78,10 +83,12 @@ export interface OrderBy {
 Defines sorting options for query results.
 
 **Properties:**
+
 - `column: string` - The column name to sort by
 - `ascending?: boolean` - Sort direction (true for ASC, false for DESC). Defaults to `true`
 
 **Examples:**
+
 ```typescript
 // Simple ascending sort
 const sortByName: OrderBy = { column: 'name' };
@@ -108,10 +115,12 @@ export interface FindOptions<T> {
 Options for the `find` method.
 
 **Properties:**
+
 - `filter?: FilterFunction<T>` - Optional filter function to apply
 - `orderBy?: OrderBy | OrderBy[]` - Optional sorting (single or multiple columns)
 
 **Examples:**
+
 ```typescript
 // Just filtering
 const filterOnly: FindOptions<User> = {
@@ -150,12 +159,14 @@ export interface FindPaginatedOptions<T> extends FindOptions<T> {
 Options for the `findPaginated` method, extending `FindOptions` with pagination parameters.
 
 **Properties:**
+
 - `page: number` - The page number (1-based)
 - `pageSize: number` - Number of items per page
 - `filter?: FilterFunction<T>` - Inherited from `FindOptions`
 - `orderBy?: OrderBy | OrderBy[]` - Inherited from `FindOptions`
 
 **Example:**
+
 ```typescript
 const paginatedOptions: FindPaginatedOptions<User> = {
   page: 1,
@@ -181,12 +192,14 @@ export interface Pagination {
 Metadata about paginated results.
 
 **Properties:**
+
 - `page: number` - Current page number (1-based)
 - `pageSize: number` - Number of items per page
 - `totalCount: number` - Total number of items across all pages
 - `totalPages: number` - Total number of pages available
 
 **Example:**
+
 ```typescript
 const pagination: Pagination = {
   page: 2,
@@ -208,10 +221,12 @@ export interface PaginatedResult<T> {
 The return type for paginated queries, containing both the data and pagination metadata.
 
 **Properties:**
+
 - `items: T[]` - Array of items for the current page
 - `pagination: Pagination` - Pagination metadata
 
 **Example:**
+
 ```typescript
 const result: PaginatedResult<User> = {
   items: [
@@ -238,6 +253,7 @@ T extends Record<string, any>
 All entities managed by `BaseRepository` must extend `Record<string, any>`, meaning they must be objects with string keys.
 
 **Valid Entity Types:**
+
 ```typescript
 // ✅ Valid - simple interface
 interface User {
@@ -272,6 +288,7 @@ type UserType = {
 ```
 
 **Invalid Entity Types:**
+
 ```typescript
 // ❌ Invalid - primitive type
 type UserId = string;

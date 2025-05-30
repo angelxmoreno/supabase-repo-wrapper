@@ -8,6 +8,13 @@ pre-commit:
         - rebase
       files: git diff --name-only HEAD
 
+    markdown:
+      run: bun run format
+      skip:
+        - merge
+        - rebase
+      files: git diff --name-only HEAD -- '*.md'
+
 commit-msg:
   commands:
     commitlint:
