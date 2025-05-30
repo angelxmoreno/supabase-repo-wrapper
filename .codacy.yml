@@ -1,0 +1,14 @@
+engines:
+  eslint:
+    enabled: true
+  markdownlint:
+    enabled: true
+    configuration: .markdownlint.json
+  shellcheck:
+    enabled: true
+
+ignore_paths:
+  - dist/
+  - node_modules/
+  - coverage/
+  - examples/
